@@ -1,0 +1,144 @@
+
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-500-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Manrope Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url("../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2") format("woff2-variations");
+}
+
+/* Layout: one continuous scroll, each scene a full-bleed band with its own ground;
+   text sits in a narrow reading column, the photograph always goes edge to edge. */
+@theme {
+  --color-mist: #f4f7f5;
+  --color-sky: #dcebf0;
+  --color-cyan: #9bced8;
+  --color-forest: #173f35;
+  --color-deep: #102d28;
+  --color-gold: #d6c18a;
+  --color-ink: #586a68;
+  --color-paper: #f7f5ee;
+  --font-display: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-body: "Manrope Variable", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* One deliberate visual world (misty light that settles into deep forest), so colors are fixed. */
+:root {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+}
+html { scroll-behavior: auto; }
+body {
+  margin: 0;
+  background: var(--color-mist);
+  color: var(--color-forest);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { max-width: 100%; display: block; }
+h1, h2, h3 { text-wrap: balance; font-weight: 400; }
+p { text-wrap: pretty; }
+
+.gutter {
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.full-screen { min-height: 100vh; min-height: 100svh; }
+.screen { height: 100vh; height: 100svh; }
+
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Scroll hint */
+@keyframes hint-drift {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+.hint-arrow { animation: hint-drift 2.4s ease-in-out infinite; display: inline-block; }
+
+/* Slow, organic mist shapes in the opening */
+@keyframes mist-a { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(4%, -3%) scale(1.06); } }
+@keyframes mist-b { 0%,100% { transform: translate(0,0) scale(1.04); } 50% { transform: translate(-5%, 4%) scale(0.97); } }
+.mist-a { animation: mist-a 18s ease-in-out infinite; }
+.mist-b { animation: mist-b 22s ease-in-out infinite; }
+
+/* Floating leaves, ripples and fabric ribbons in the wish scene */
+@keyframes float-up {
+  0% { transform: translate3d(0, 0, 0) rotate(var(--r0, 0deg)); opacity: 0; }
+  12% { opacity: var(--o, 0.6); }
+  88% { opacity: var(--o, 0.6); }
+  100% { transform: translate3d(var(--dx, 20px), -110vh, 0) rotate(var(--r1, 120deg)); opacity: 0; }
+}
+@keyframes ripple {
+  0% { transform: scale(0.4); opacity: 0; }
+  20% { opacity: 0.55; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+@keyframes sway {
+  0%, 100% { transform: translateX(0) rotate(-2deg); }
+  50% { transform: translateX(14px) rotate(2deg); }
+}
+.floater { animation: float-up var(--d, 16s) linear var(--delay, 0s) infinite; will-change: transform, opacity; }
+.ripple { animation: ripple 7s ease-out var(--delay, 0s) infinite; }
+.sway { animation: sway 9s ease-in-out infinite; }
+
+/* Celebration particles in the finale */
+@keyframes rise {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  15% { opacity: var(--o, 0.7); }
+  85% { opacity: var(--o, 0.7); }
+  100% { transform: translate3d(var(--dx, 0px), -70vh, 0); opacity: 0; }
+}
+@keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: var(--o, 0.8); } }
+.particle { animation: rise var(--d, 14s) ease-in-out var(--delay, 0s) infinite; will-change: transform, opacity; }
+.twinkle { animation: twinkle var(--d, 5s) ease-in-out var(--delay, 0s) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hint-arrow, .mist-a, .mist-b, .sway, .ripple { animation: none; }
+  .floater, .particle { animation: none; opacity: var(--o, 0.5); }
+  .twinkle { animation: none; opacity: 0.6; }
+}
+
+/* Scroll track for the photograph reveal: the sticky stage stays put while this scrolls past. */
+.reveal-track { height: 300vh; height: 300svh; }
+@media (min-width: 900px) { .reveal-track { height: 340vh; height: 340svh; } }
+
+@media (prefers-reduced-motion: reduce) { .ambient { display: none; } }
